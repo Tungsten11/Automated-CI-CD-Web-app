@@ -9,12 +9,13 @@ resource "aws_instance" "web" {
 
   user_data = <<-EOF
             #!/bin/bash
-            amazon-linux-extras install docker -y
+            dnf update -y
+            dnf install -y docker
             systemctl start docker
             systemctl enable docker
-            usedmod -aG docker ec2-user
+            usermod -aG docker ec2-user
 
-            #Pull image and run
+            # Pull image and run
             docker run -d -p 80:80 seeker1/flask:latest
             EOF
   tags = {
