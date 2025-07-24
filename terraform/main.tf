@@ -15,9 +15,9 @@ resource "aws_instance" "web" {
             systemctl enable docker
             usermod -aG docker ec2-user
 
-            # Pull image and run
-            docker run -d -p 80:80 seeker1/flask:latest
-            EOF
+            docker run -d -p 80:80 seeker1/flaskapp:latest
+  EOF
+  
   tags = {
     Name = "flask-EC2-app"
   }  
