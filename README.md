@@ -20,19 +20,3 @@ Features
 - GitHub Actions (CI/CD)
 - Amazon Linux 2023
 
-
-STRUCTURE
-
-My-CI-CD-Project/
-├── .github/
-│   └── workflows/
-│       └── main.yml            ← GitHub Actions CI/CD workflow
-├── terraform/
-│   ├── main.tf                 ← AWS resources (EC2, SG, etc.)
-│   ├── variables.tf            ← Terraform input variables
-│   ├── outputs.tf              ← Terraform outputs
-│   └── provider.tf             ← Terraform AWS provider config
-├── app/
-│   └── app.py                  ← Your Flask web app
-├── Dockerfile                  ← Dockerfile for Flask app
-├── README.md                   ← Main project documentation
