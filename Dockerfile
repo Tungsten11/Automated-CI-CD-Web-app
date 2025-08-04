@@ -1,12 +1,18 @@
-# Use an official Python Image
 FROM python:3.11-slim-bookworm
 
 WORKDIR /app
-COPY app/ /app/
 
-RUN apt-get update && apt-get upgrade -y && apt-get clean
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends gcc && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY app/requirements.txt .
+
 RUN pip install --no-cache-dir -r requirements.txt
 
-EXPOSE 80
-CMD ["python", "app.py"]
+COPY app/ .
 
+EXPOSE 80
+
+CMD ["python", "app.py"]
