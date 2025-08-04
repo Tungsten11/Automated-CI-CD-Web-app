@@ -3,6 +3,9 @@ name: My CI/CD Project
 on:
   push:
     branches: ["main"]
+    paths-ignore:
+      - "README.md"
+      - "**/README.md"
 
 jobs:
   deploy:
