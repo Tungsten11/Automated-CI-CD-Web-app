@@ -38,7 +38,8 @@ The system is composed of the following key components:
 The process begins when a developer pushes new code to the main branch of the GitHub repository.
     - **Code Push:** A developer commits and pushes code to the designated GitHub repository.
     - **GitHub Actions Trigger:** This action triggers a GitHub Actions workflow.
-    - **Build & Push:** The workflow automatically builds a Docker image from the application's source code. Optionally, this image is then pushed to a container registry like Docker Hub.
+    - **Build & Security Scan:** The workflow first automatically builds a Docker image. It then uses Trivy to scan the image for known vulnerabilities. The pipeline can be configured to fail if critical vulnerabilities are found, ensuring only secure images proceed.
+    - **Push to Registry:** After a successful scan, the secure image is pushed to Docker Hub.
 
 2. **Infrastructure Provisioning with Terraform** <br>
 The AWS infrastructure required to run the application is defined and managed using Terraform.
