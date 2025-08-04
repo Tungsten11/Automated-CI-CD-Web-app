@@ -20,3 +20,5 @@ Features
 - GitHub Actions (CI/CD)
 - Amazon Linux 2023
 
+
+<img width="1391" height="900" alt="Automated-CI-CD-FLASK" src="https://github.com/user-attachments/assets/549d5e70-a648-4de8-95f8-177ec3002db9" />
