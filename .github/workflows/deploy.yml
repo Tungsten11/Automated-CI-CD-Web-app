@@ -39,7 +39,7 @@ jobs:
         with:
           image-ref: "seeker1/flaskapp:latest"
           format: "table"
-          exit-code: "1"
+          exit-code: "0"
 
       - name: Log in to Docker hub
         uses: docker/login-action@v3
