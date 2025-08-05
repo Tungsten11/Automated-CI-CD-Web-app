@@ -25,7 +25,8 @@ resource "aws_instance" "web" {
             systemctl enable docker
             usermod -aG docker ec2-user
 
-            docker run -d -p 80:80 seeker1/flaskapp:latest
+            export DOCKERHUB_USERNAME=${dockerhub_username}
+            docker run -d -p 80:80 $secrets.DOCKERHUB_USERNAME/flaskapp:latest
   EOF
 
   tags = {
