@@ -36,6 +36,7 @@ resource "aws_instance" "web" {
             docker run -d -p 80:80 $DOCKERHUB_USERNAME/flaskapp:latest
   EOF
 
+
   tags = {
     Name = "flask-EC2-app"
   }
