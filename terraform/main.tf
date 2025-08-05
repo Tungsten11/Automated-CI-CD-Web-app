@@ -12,34 +12,21 @@ provider "aws" {
   region = "ap-southeast-1"
 }
 
-variable "dockerhub_username" {
-  description = "DockerHub username"
-  type        = string
-  sensitive   = true
-}
-
-variable "dockerhub_token" {
-  description = "DockerHub access token"
-  type        = string
-  sensitive   = true
-}
-
 resource "aws_instance" "web" {
   ami           = "ami-07833df4a1317c7a8" # Amazon Linux 2023
   instance_type = "t2.micro"
   key_name      = "my-cicd-app-key"
 
   user_data = <<-EOF
-              #!/bin/bash
-              sudo dnf update -y
-              sudo dnf install -y docker
-              systemctl enable docker
-              systemctl start docker
-              sudo usermod -a -G docker ec2-user
-              sudo docker login -u ${var.dockerhub_username} -p ${var.dockerhub_token}
-              sudo docker pull ${var.dockerhub_username}/flaskapp:latest
-              sudo docker run -d -p 80:5000 ${var.dockerhub_username}/flaskapp:latest
-              EOF
+            #!/bin/bash
+            dnf update -y
+            dnf install -y docker
+            systemctl start docker
+            systemctl enable docker
+            usermod -aG docker ec2-user
+
+            docker run -d -p 80:80 seeker1/flaskapp:latest
+  EOF
 
 
 
