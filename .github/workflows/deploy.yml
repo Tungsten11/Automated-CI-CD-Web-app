@@ -71,7 +71,8 @@ jobs:
       - name: Terraform Apply
         run: |
           terraform apply -auto-approve \
-          -var="dockerhub_username=${{ secrets.DOCKERHUB_USERNAME }}"
+          -var="dockerhub_username=${{ secrets.DOCKERHUB_USERNAME }}" \
+          -var="dockerhub_token=${{ secrets.DOCKERHUB_TOKEN }}"
         working-directory: ./terraform
 
       - name: Show EC2 Public IP
