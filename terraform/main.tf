@@ -12,6 +12,12 @@ provider "aws" {
   region = "ap-southeast-1"
 }
 
+variable "dockerhub_username" {
+  description = "DockerHub username"
+  type        = string
+  sensitive   = true
+}
+
 resource "aws_instance" "web" {
   ami           = "ami-07833df4a1317c7a8" # Amazon Linux 2023
   instance_type = "t2.micro"
@@ -25,8 +31,8 @@ resource "aws_instance" "web" {
             systemctl enable docker
             usermod -aG docker ec2-user
 
-            export DOCKERHUB_USERNAME=${dockerhub_username}
-            docker run -d -p 80:80 $secrets.DOCKERHUB_USERNAME/flaskapp:latest
+            export DOCKERHUB_USERNAME=${var.dockerhub_username}
+            docker run -d -p 80:80 DOCKERHUB_USERNAME/flaskapp:latest
   EOF
 
   tags = {

@@ -1,2 +1,15 @@
-*.tfstate
+#sensitive config
 .venv
+.env
+*.pem
+*.key
+*.env
+
+
+#terraform state
+*.tfstate
+*.tfstate.backup
+*.tfplan
+crash.log
+.terraform/
+terraform.tfvars
