@@ -32,7 +32,7 @@ resource "aws_instance" "web" {
             usermod -aG docker ec2-user
 
             docker run -d -p 80:80 seeker1/flaskapp:latest
-  EOF
+    EOF
 
 
   tags = {
