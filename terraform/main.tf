@@ -32,6 +32,7 @@ resource "aws_instance" "web" {
             usermod -aG docker ec2-user
 
             export DOCKERHUB_USERNAME=${var.dockerhub_username}
+            docker pull $DOCKERHUB_USERNAME/flask:latest
             docker run -d -p 80:80 $DOCKERHUB_USERNAME/flaskapp:latest
   EOF
 
