@@ -94,6 +94,8 @@ jobs:
         working-directory: ./terraform
 
       - name: Terraform Apply
+        env:
+          TF_VAR_grafana_password: ${{ secrets.GRAFANA_PASSWORD }}
         run: terraform apply -auto-approve
         working-directory: ./terraform
 
