@@ -71,19 +71,25 @@ jobs:
         run: terraform init
         working-directory: ./terraform
 
-      - name: Check and Force Unlock Terraform
+      - name: Check and force unlock Terraform state if needed
         run: |
-          echo "Checking for existing Terraform locks..."
+          LOCK_KEY="my-cicd-state-flask-bucket1/dev/terraform.tfstate.tflock"
 
-          terraform plan -input=false || true
+          # Check if the lock file exists in S3
+          if aws s3 ls "s3://$LOCK_KEY" >/dev/null 2>&1; then
+            echo "Lock file found. Downloading..."
+            aws s3 cp "s3://$LOCK_KEY" ./terraform.tflock
 
-          LOCK_ID=$(terraform plan -input=false 2>&1 | grep -oE '[0-9a-f-]{36}' | head -n 1)
+            LOCK_ID=$(jq -r '.ID' terraform.tflock)
 
-          if [ -n "$LOCK_ID" ]; then
-            echo "Lock detected: $LOCK_ID"
-            terraform force-unlock -force "$LOCK_ID"
+            if [ -n "$LOCK_ID" ] && [ "$LOCK_ID" != "null" ]; then
+              echo "Force unlocking Terraform state with ID: $LOCK_ID"
+              terraform force-unlock -force "$LOCK_ID"
+            else
+              echo "Lock file exists but no valid lock ID found."
+            fi
           else
-            echo "No lock detected."
+            echo "No Terraform lock found. Skipping unlock."
           fi
         working-directory: ./terraform
 
