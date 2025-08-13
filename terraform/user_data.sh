@@ -1,13 +1,14 @@
 #!/bin/bash
 set -ex
 
-# Update system
+# Update system and install Docker
 dnf update -y
-
-# Install Docker
-dnf install -y docker
+dnf install -y docker git awscli
 systemctl enable docker
 systemctl start docker
+
+# Add ec2-user to docker group
+usermod -aG docker ec2-user
 
 # Install Docker Compose
 curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" \
@@ -18,7 +19,7 @@ chmod +x /usr/local/bin/docker-compose
 mkdir -p /opt/monitoring
 cd /opt/monitoring
 
-# Pull Flask app image from Docker Hub
+# Pull Flask app from Docker Hub
 docker pull seeker1/flaskapp:latest
 
 # Prometheus config
@@ -41,13 +42,13 @@ scrape_configs:
       - targets: ['cadvisor:8080']
 EOF
 
-# Docker Compose file
-cat > docker-compose.yml <<'EOF'
+# Docker Compose file with secure Grafana password
+cat > docker-compose.yml <<EOF
 version: '3.8'
 
 services:
   flask-app:
-    image: seeker1/flaskapp:latest
+    image: seeker/flaskapp:latest
     container_name: flask-app
     ports:
       - "80:80"
@@ -63,6 +64,8 @@ services:
   grafana:
     image: grafana/grafana
     container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
     ports:
       - "3000:3000"
 
@@ -84,5 +87,5 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
 EOF
 
-# Start the stack
+# Start all containers
 /usr/local/bin/docker-compose up -d
