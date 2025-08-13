@@ -3,7 +3,7 @@ FROM python:3.11-slim-bookworm
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies for building Python packages
+# Install system dependencies required for Python packages
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     gcc \
@@ -11,6 +11,9 @@ RUN apt-get update && \
     libffi-dev \
     libssl-dev \
     python3-dev \
+    libpq-dev \
+    libjpeg-dev \
+    zlib1g-dev \
     curl \
     git && \
     apt-get clean && \
