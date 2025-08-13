@@ -12,26 +12,77 @@ provider "aws" {
   region = "ap-southeast-1"
 }
 
-resource "aws_instance" "web" {
-  ami           = "ami-07833df4a1317c7a8" # Amazon Linux 2023
-  instance_type = "t2.micro"
-  key_name      = "my-cicd-app-key"
+data "aws_ami" "amazon_linux_2023" {
+  most_recent = true
+  owners      = ["amazon"]
 
-  user_data = <<-EOF
-            #!/bin/bash
-            dnf update -y
-            dnf install -y docker
-            systemctl start docker
-            systemctl enable docker
-            usermod -aG docker ec2-user
+  filter {
+    name   = "name"
+    values = ["al2023-ami-*-x86_64"]
+  }
+}
+resource "aws_instance" "monitoring_ec2" {
+  ami                    = data.aws_ami.amazon_linux_2023.id
+  instance_type          = "t2.micro"
+  key_name               = "my-cicd-app-key"
+  vpc_security_group_ids = [aws_security_group.monitoring_sg.id]
 
-            docker run -d -p 80:80 seeker1/flaskapp:latest
-  EOF
-
-
+  user_data = file("user_data.sh")
 
   tags = {
-    Name = "flask-EC2-app"
+    Name = "Monitoring-EC2"
+  }
+}
+
+resource "aws_security_group" "monitoring_sg" {
+  name        = "monitoring-sg"
+  description = "Allow HTTP, HTTPS, and Grafana"
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 9090
+    to_port     = 9090
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 9100
+    to_port     = 9100
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/32"]
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
@@ -47,7 +98,3 @@ resource "random_id" "suffix" {
   byte_length = 4
 }
 
-resource "aws_cloudwatch_log_group" "flask_logs" {
-  name              = "/aws/ec2/flaskapp"
-  retention_in_days = 7
-}

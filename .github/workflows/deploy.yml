@@ -2,7 +2,8 @@ name: My CI/CD Project
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
     paths-ignore:
       - "README.md"
       - "**/README.md"
@@ -10,6 +11,11 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: ap-southeast-1
+      ECR_REPOSITORY: flask-prometheus
+      IMAGE_TAG: latest
 
     steps:
       - name: Check Code
