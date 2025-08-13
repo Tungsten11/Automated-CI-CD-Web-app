@@ -41,7 +41,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t seeker1/flaskapp:latest .
+          docker build -t seeker1/flaskapp:latest ./app
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
