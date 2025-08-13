@@ -70,15 +70,17 @@ jobs:
       - name: Check for stuck Terraform locks
         run: |
           echo "Checking for existing Terraform locks..."
+          # Fetch actual LockIDs (UUIDs) from DynamoDB
           LOCKS=$(aws dynamodb scan \
             --table-name tf-state-locking-cicd \
             --query "Items[].LockID.S" \
             --output text)
+
           if [ ! -z "$LOCKS" ]; then
             echo "Found lock(s): $LOCKS"
             for LOCK in $LOCKS; do
-              echo "Force unlocking: $LOCK"
-              terraform force-unlock -force $LOCK -lock=false -input=false
+              echo "Force unlocking LockID: $LOCK"
+              terraform force-unlock -force $LOCK
             done
           else
             echo "No stuck locks found."
