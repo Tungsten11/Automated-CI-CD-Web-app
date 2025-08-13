@@ -33,7 +33,7 @@ jobs:
           curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
 
       - name: Build Docker Image
-        run: docker build -t seeker1/flaskapp:latest .app/
+        run: docker build -t seeker1/flaskapp:latest ./app
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
@@ -70,6 +70,9 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve
         working-directory: ./terraform
+
+        env:
+          GRAFANA_PASSWORD: ${{ secrets.GRAFANA_PASSWORD }}
 
       - name: Show EC2 Public IP
         run: terraform output instance_ip

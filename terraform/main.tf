@@ -27,7 +27,9 @@ resource "aws_instance" "monitoring_ec2" {
   key_name               = "my-cicd-app-key"
   vpc_security_group_ids = [aws_security_group.monitoring_sg.id]
 
-  user_data = file("user_data.sh")
+  user_data = templatefile("${path.module}/user_data.sh.tpl", {
+    grafana_password = var.grafana_password
+  })
 
   tags = {
     Name = "Monitoring-EC2"
