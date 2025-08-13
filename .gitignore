@@ -5,7 +5,6 @@
 *.key
 *.env
 
-
 #terraform state
 *.tfstate
 *.tfstate.backup
