@@ -71,22 +71,19 @@ jobs:
         run: terraform init
         working-directory: ./terraform
 
-      - name: Check for stuck Terraform locks
+      - name: Check and Force Unlock Terraform
         run: |
           echo "Checking for existing Terraform locks..."
-          LOCKS=$(aws dynamodb scan \
-            --table-name tf-state-locking-cicd \
-            --query "Items[].LockID.S" \
-            --output text)
 
-          if [ ! -z "$LOCKS" ]; then
-            echo "Found lock(s): $LOCKS"
-            for LOCK in $LOCKS; do
-              echo "Force unlocking LockID: $LOCK"
-              terraform force-unlock -force $LOCK
-            done
+          terraform plan -input=false || true
+
+          LOCK_ID=$(terraform plan -input=false 2>&1 | grep -oE '[0-9a-f-]{36}' | head -n 1)
+
+          if [ -n "$LOCK_ID" ]; then
+            echo "Lock detected: $LOCK_ID"
+            terraform force-unlock -force "$LOCK_ID"
           else
-            echo "No stuck locks found."
+            echo "No lock detected."
           fi
         working-directory: ./terraform
 
