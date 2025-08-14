@@ -21,7 +21,7 @@ mkdir -p /opt/monitoring
 chown ec2-user:ec2-user /opt/monitoring
 cd /opt/monitoring
 
-# Pull Flask app from Docker Hub
+# Pull Flask app, Granana at Prometheus from Docker Hub
 docker pull seeker1/flaskapp:latest
 docker pull prom/prometheus
 docker pull grafana/grafana
@@ -71,7 +71,7 @@ services:
     image: grafana/grafana
     container_name: grafana
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=${grafana_password}
+      - GF_SECURITY_ADMIN_PASSWORD=\${grafana_password}
     ports:
       - "3000:3000"
 
