@@ -23,6 +23,10 @@ cd /opt/monitoring
 
 # Pull Flask app from Docker Hub
 docker pull seeker1/flaskapp:latest
+docker pull prom/prometheus
+docker pull grafana/grafana
+docker pull prom/node-exporter
+docker pull gcr.io/cadvisor/cadvisor:latest
 
 # Prometheus config
 mkdir -p prometheus
