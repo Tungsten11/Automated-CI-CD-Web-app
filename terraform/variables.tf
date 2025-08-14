@@ -3,7 +3,12 @@ variable "region" {
 }
 
 variable "grafana_password" {
-  description = "Grafana admin password"
+  description = "Password for Grafana admin user"
   type        = string
   sensitive   = true
+}
+
+variable "vpc_id" {
+  description = "VPC where resources will be deployed"
+  type        = string
 }
