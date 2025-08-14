@@ -39,7 +39,7 @@ module "monitoring_sg" {
   name          = "monitoring-sg"
   description   = "Allow SSH, Grafana, Prometheus, Flask ports"
   vpc_id        = var.vpc_id
-  allowed_cidrs = ["${local.my_ip}/32"]
+  allowed_cidrs = var.allowed_cidrs
 }
 
 # EC2 Instance Module
@@ -50,6 +50,7 @@ module "monitoring_ec2" {
   key_name        = "my-cicd-app-key"
   subnet_id       = var.subnet_id
   security_groups = [module.monitoring_sg.sg_id]
+
   user_data = templatefile("${path.module}/user_data.sh.tpl", {
     grafana_password = var.grafana_password
   })
