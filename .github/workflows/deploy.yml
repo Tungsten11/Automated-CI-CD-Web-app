@@ -68,7 +68,7 @@ jobs:
         uses: hashicorp/setup-terraform@v2
 
       - name: Terraform Init
-        run: terraform init
+        run: terraform init -lock-timeout=60s
         working-directory: ./terraform
 
       - name: Check and force unlock Terraform state if needed
@@ -96,7 +96,7 @@ jobs:
       - name: Terraform Apply
         env:
           TF_VAR_grafana_password: ${{ secrets.GRAFANA_PASSWORD }}
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve -lock-timeout=60s
         working-directory: ./terraform
 
       - name: Show EC2 Public IP
