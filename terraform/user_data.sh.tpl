@@ -2,7 +2,7 @@
 set -ex
 
 # Export Grafana password from Terraform variable
-export grafana_password="${var.grafana_password}"
+export grafana_password="${grafana_password}"
 
 # Update system and install Docker
 yum update -y
