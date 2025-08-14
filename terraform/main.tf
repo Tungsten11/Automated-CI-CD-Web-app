@@ -14,14 +14,14 @@ provider "aws" {
 
 
 # Fetch your public IP
-data "http" "my_ip" {
-  url = "https://checkip.amazonaws.com"
-}
+# data "http" "my_ip" {
+#   url = "https://checkip.amazonaws.com"
+# }
 
-locals {
-  my_ip         = chomp(data.http.my_ip.response_body) # remove newline
-  allowed_cidrs = ["${local.my_ip}/32"]
-}
+# locals {
+#   my_ip         = chomp(data.http.my_ip.response_body) # remove newline
+#   allowed_cidrs = ["${local.my_ip}/32"]
+# }
 
 # Latest Amazon Linux 2 AMI
 data "aws_ami" "amazon_linux_2" {
@@ -40,7 +40,7 @@ module "monitoring_sg" {
   name          = "monitoring-sg"
   description   = "Allow SSH, Grafana, Prometheus, Flask ports"
   vpc_id        = var.vpc_id
-  allowed_cidrs = local.allowed_cidrs
+  allowed_cidrs = var.allowed_cidrs
 }
 
 # EC2 Instance Module

@@ -103,13 +103,10 @@ jobs:
           fi
         working-directory: ./terraform
 
-      # - name: Terraform Plan
-      #   working-directory: ./terraform
-      #   run: terraform plan -lock-timeout=60s
-
       - name: Terraform Apply
         env:
           TF_VAR_grafana_password: ${{ secrets.GRAFANA_PASSWORD }}
+          TF_VAR_allowed_cidrs: '["${{ secrets.MY_ALLOWED_IP }}/32"]'
         run: terraform apply -auto-approve -lock=false
         working-directory: ./terraform
 
