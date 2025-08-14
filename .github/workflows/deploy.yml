@@ -71,6 +71,12 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
 
+      - name: Get public IP
+        id: getip
+        run: |
+          MY_IP=$(curl -s https://checkip.amazonaws.com)
+          echo "my_ip=${MY_IP}" >> $GITHUB_ENV
+
       - name: Terraform Init
         run: terraform init -lock-timeout=60s
         working-directory: ./terraform
