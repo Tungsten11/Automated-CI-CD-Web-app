@@ -19,7 +19,7 @@ data "http" "my_ip" {
 }
 
 locals {
-  my_ip = chomp(data.http.my_ip.body) # remove newline
+  my_ip = chomp(data.http.my_ip.response_body) # remove newline
 }
 
 # Latest Amazon Linux 2 AMI
@@ -47,7 +47,7 @@ module "monitoring_ec2" {
   ami             = data.aws_ami.amazon_linux_2.id
   instance_type   = "t2.micro"
   key_name        = "my-cicd-app-key"
-  subnet_id       = subnet-0fc571dc9a88a567e
+  subnet_id       = var.subnet_id
   security_groups = [module.my_sg.sg_id]
   user_data = templatefile("${path.module}/user_data.sh.tpl", {
     grafana_password = var.grafana_password

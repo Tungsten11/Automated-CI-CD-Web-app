@@ -12,3 +12,8 @@ variable "vpc_id" {
   description = "VPC where resources will be deployed"
   type        = string
 }
+
+variable "subnet_id" {
+  description = "Subnet where the EC2 instance will be deployed"
+  type        = string
+}
