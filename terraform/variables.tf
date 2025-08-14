@@ -19,6 +19,5 @@ variable "subnet_id" {
 }
 
 variable "allowed_cidrs" {
-  type    = list(string)
-  default = ["${local.my_ip}/32"]
+  type = list(string)
 }
