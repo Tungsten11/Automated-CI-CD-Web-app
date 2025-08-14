@@ -35,12 +35,13 @@ data "aws_ami" "amazon_linux_2" {
 
 # Security Group Module
 module "monitoring_sg" {
-  source      = "./modules/security-group"
-  name        = "monitoring-sg"
-  description = "Allow SSH, Grafana, Prometheus, Flask ports"
-  vpc_id      = var.vpc_id
-  allowed_ips = ["${local.my_ip}/32"]
+  source        = "./modules/security-group"
+  name          = "monitoring-sg"
+  description   = "Allow SSH, Grafana, Prometheus, Flask ports"
+  vpc_id        = var.vpc_id
+  allowed_cidrs = ["${local.my_ip}/32"]
 }
+
 # EC2 Instance Module
 module "monitoring_ec2" {
   source          = "./modules/ec2-instance"
