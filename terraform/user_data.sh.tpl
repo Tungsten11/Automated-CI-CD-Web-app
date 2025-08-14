@@ -2,8 +2,8 @@
 set -ex
 
 # Update system and install Docker
-dnf update -y
-dnf install -y docker git awscli
+yum update -y
+yum install -y docker git aws-cli
 systemctl enable docker
 systemctl start docker
 
@@ -18,6 +18,7 @@ chmod +x /usr/local/bin/docker-compose
 
 # Create monitoring directory
 mkdir -p /opt/monitoring
+chown ec2-user:ec2-user /opt/monitoring
 cd /opt/monitoring
 
 # Pull Flask app from Docker Hub
