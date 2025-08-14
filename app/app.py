@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST
 
 app = Flask(__name__)
@@ -9,7 +9,7 @@ REQUEST_COUNT = Counter('flask_app_requests_total',
 @app.route('/')
 def index():
     REQUEST_COUNT.inc()
-    return "Hello from Flask with Prometheus metrics!"
+    return render_template("index.html")
 
 
 @app.route('/metrics')
