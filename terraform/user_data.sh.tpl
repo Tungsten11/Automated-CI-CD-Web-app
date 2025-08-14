@@ -1,6 +1,9 @@
 #!/bin/bash
 set -ex
 
+# Export Grafana password from Terraform variable
+export grafana_password="${var.grafana_password}"
+
 # Update system and install Docker
 yum update -y
 yum install -y docker git aws-cli
@@ -9,6 +12,7 @@ systemctl start docker
 
 # Add ec2-user to docker group
 usermod -aG docker ec2-user
+newgrp docker
 
 # Install Docker Compose
 curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" \
@@ -23,9 +27,9 @@ cd /opt/monitoring
 
 # Pull Flask app, Granana at Prometheus from Docker Hub
 docker pull seeker1/flaskapp:latest
-docker pull prom/prometheus
-docker pull grafana/grafana
-docker pull prom/node-exporter
+docker pull prom/prometheus:latest
+docker pull grafana/grafana:latest
+docker pull prom/node-exporter:latest
 docker pull gcr.io/cadvisor/cadvisor:latest
 
 # Prometheus config
@@ -71,12 +75,12 @@ services:
     image: grafana/grafana
     container_name: grafana
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=\${grafana_password}
+      - GF_SECURITY_ADMIN_PASSWORD=${grafana_password}
     ports:
       - "3000:3000"
 
   node-exporter:
-    image: prom/node-exporter
+    image: prom/node-exporter:latest
     container_name: node-exporter
     ports:
       - "9100:9100"
