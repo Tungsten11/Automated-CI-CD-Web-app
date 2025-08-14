@@ -9,3 +9,8 @@ output "grafana_url" {
 output "prometheus_url" {
   value = "http://${module.monitoring_ec2.public_ip}:9090"
 }
+
+
+output "instance_ip" {
+  value = module.monitoring_ec2.public_ip
+}
