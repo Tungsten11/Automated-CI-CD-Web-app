@@ -54,7 +54,7 @@ version: '3.8'
 
 services:
   flask-app:
-    image: seeker/flaskapp:latest
+    image: seeker1/flaskapp:latest
     container_name: flask-app
     ports:
       - "80:80"
