@@ -67,6 +67,10 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
 
+      - name: Generate terraform.tfvars
+        run: |
+          echo "vpc_id = \"${{ secrets.VPC_ID }}\"" > ./terraform/terraform.tfvars
+
       - name: Terraform Init
         run: terraform init
         working-directory: ./terraform
