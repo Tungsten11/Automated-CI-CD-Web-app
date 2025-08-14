@@ -48,7 +48,7 @@ module "monitoring_ec2" {
   instance_type   = "t2.micro"
   key_name        = "my-cicd-app-key"
   subnet_id       = var.subnet_id
-  security_groups = [module.my_sg.sg_id]
+  security_groups = [module.monitoring_sg.sg_id]
   user_data = templatefile("${path.module}/user_data.sh.tpl", {
     grafana_password = var.grafana_password
   })
