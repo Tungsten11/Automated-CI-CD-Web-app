@@ -70,6 +70,7 @@ jobs:
       - name: Generate terraform.tfvars
         run: |
           echo "vpc_id = \"${{ secrets.VPC_ID }}\"" > ./terraform/terraform.tfvars
+          echo "subnet_id" \"${{ secrets.SUBNET_ID }}\"" >> ./terraform/terraform.tfvars
 
       - name: Terraform Init
         run: terraform init
