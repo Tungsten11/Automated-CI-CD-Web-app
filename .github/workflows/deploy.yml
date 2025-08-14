@@ -104,7 +104,7 @@ jobs:
       - name: Terraform Apply
         env:
           TF_VAR_grafana_password: ${{ secrets.GRAFANA_PASSWORD }}
-        run: terraform apply -auto-approve -lock-timeout=60s
+        run: terraform apply -auto-approve -lock-false
         working-directory: ./terraform
 
       - name: Show EC2 Public IP
