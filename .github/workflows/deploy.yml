@@ -97,9 +97,9 @@ jobs:
           fi
         working-directory: ./terraform
 
-      - name: Terraform Plan
-        working-directory: ./terraform
-        run: terraform plan -lock-timeout=60s
+      # - name: Terraform Plan
+      #   working-directory: ./terraform
+      #   run: terraform plan -lock-timeout=60s
 
       - name: Terraform Apply
         env:
