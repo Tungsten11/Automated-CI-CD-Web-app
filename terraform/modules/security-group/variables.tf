@@ -1,11 +1,23 @@
-variable "name" {}
-variable "description" {}
-variable "vpc_id" {}
+variable "name" {
+  type        = string
+  description = "Name of the security group"
+}
+
+variable "description" {
+  type        = string
+  description = "Description of the security group"
+}
+
+variable "vpc_id" {
+  type        = string
+  description = "The VPC ID where the security group will be created"
+}
 
 variable "allowed_cidrs" {
-  description = "List of CIDR blocks allowed to access the security group"
   type        = list(string)
+  description = "List of allowed CIDR blocks"
 }
+
 
 # variable "allowed_ips" {
 #   type = list(string)
