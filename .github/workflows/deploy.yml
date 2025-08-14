@@ -8,6 +8,10 @@ on:
       - "README.md"
       - "**/README.md"
 
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -92,6 +96,9 @@ jobs:
             echo "No Terraform lock found. Skipping unlock."
           fi
         working-directory: ./terraform
+
+      - name: Terraform Plan
+        run: terraform plan -lock-timeout=60s
 
       - name: Terraform Apply
         env:
