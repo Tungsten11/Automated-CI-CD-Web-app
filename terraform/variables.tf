@@ -17,3 +17,7 @@ variable "subnet_id" {
   description = "Subnet where the EC2 instance will be deployed"
   type        = string
 }
+
+variable "allowed_cidrs" {
+  type = list(string)
+}
