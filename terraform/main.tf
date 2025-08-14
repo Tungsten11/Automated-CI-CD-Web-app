@@ -12,7 +12,7 @@ provider "aws" {
   region = "ap-southeast-1"
 }
 
-data "aws_ami" "amazon_linux_2023" {
+data "aws_ami" "amazon_linux" {
   most_recent = true
   owners      = ["amazon"]
 
