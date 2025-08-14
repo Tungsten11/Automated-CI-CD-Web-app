@@ -54,7 +54,6 @@ EOF
 
 # Docker Compose file with secure Grafana password
 cat > docker-compose.yml <<EOF
-version: '3.8'
 
 services:
   flask-app:
