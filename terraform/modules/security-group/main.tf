@@ -7,28 +7,28 @@ resource "aws_security_group" "monitoring_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = var.allowed_ips
+    cidr_blocks = var.allowed_cidrs
   }
 
   ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = var.allowed_ips
+    cidr_blocks = var.allowed_cidrs
   }
 
   ingress {
     from_port   = 3000
     to_port     = 3000
     protocol    = "tcp"
-    cidr_blocks = var.allowed_ips
+    cidr_blocks = var.allowed_cidrs
   }
 
   ingress {
     from_port   = 9090
     to_port     = 9090
     protocol    = "tcp"
-    cidr_blocks = var.allowed_ips
+    cidr_blocks = var.allowed_cidrs
   }
 
   egress {
