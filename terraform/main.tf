@@ -12,17 +12,6 @@ provider "aws" {
   region = "ap-southeast-1"
 }
 
-
-# Fetch your public IP
-# data "http" "my_ip" {
-#   url = "https://checkip.amazonaws.com"
-# }
-
-# locals {
-#   my_ip         = chomp(data.http.my_ip.response_body) # remove newline
-#   allowed_cidrs = ["${local.my_ip}/32"]
-# }
-
 # Latest Amazon Linux 2 AMI
 data "aws_ami" "amazon_linux_2" {
   most_recent = true
